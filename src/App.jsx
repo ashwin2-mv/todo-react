@@ -1,34 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const App = () => {
-  // const [value, setValue] = useState(initialValue)
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
   const [completedTodos, setcompletedTodos] = useState([]);
   const handleMarkAsCompleted = (addedTodo) => {
     setcompletedTodos((prev) => [...prev, addedTodo]);
   };
-  // console.log(to do)
-  console.log(completedTodos);
   const handleTodos = () => {
     if (todo.length != 0) {
-      setTodos((prev) => [...prev, todo]);
+      setTodos((prev) => [...prev, { title: todo, id: crypto.randomUUID() }]);
       setTodo("");
     }
-
-    // setTodos((prev) => [...prev, todo]);
-    // []
-    // ['todo1','todo2']
-    // [['todo1','todo2']]
   };
-  const handleDeleteTodo = (addedKey) => {
-    const updatedTodos = todos.filter((todo, key) => key !== addedKey);
+  const handleDeleteTodo = (addedTodo) => {
+    const updatedTodos = todos.filter((todo, key) => todo.id !== addedTodo.id);
     setTodos(updatedTodos);
-
     const updatedCompletedTodos = completedTodos.filter(
-      (todo, key) => key !== addedKey
+      (todo) => todo.id !== addedTodo.id
     );
-
     setcompletedTodos(updatedCompletedTodos);
   };
   return (
@@ -57,11 +47,11 @@ const App = () => {
             <h2>Added Todos</h2>
             <ul>
               {todos.map((todo, key) => (
-                <li key={key}>
+                <li key={todo.id}>
                   <div className="grid">
                     <div>
                       <strong>
-                        {key + 1}. {todo}
+                        {key + 1}. {todo.title}
                       </strong>
                     </div>
                     <div>
@@ -72,9 +62,11 @@ const App = () => {
                           Mark As Completed
                         </button>
                       )}
+                    </div>
+                    <div>
                       <button
                         className="secondary outline"
-                        onClick={() => handleDeleteTodo(key)}
+                        onClick={() => handleDeleteTodo(todo)}
                       >
                         Delete{" "}
                       </button>
