@@ -1,27 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const App = () => {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
-  console.log(todos);
-  const [completedTodos, setcompletedTodos] = useState([]);
+  const [completedTodos, setCompletedTodos] = useState([]);
   const handleMarkAsCompleted = (addedTodo) => {
-    setcompletedTodos((prev) => [...prev, addedTodo]);
+    setCompletedTodos((prev) => {
+      const updatedCompletedTodos = [...prev, addedTodo];
+      localStorage.setItem(
+        "completedTodos",
+        JSON.stringify(updatedCompletedTodos)
+      );
+
+      return updatedCompletedTodos;
+    });
   };
   const handleTodos = () => {
     if (todo.length !== 0) {
-      setTodos((prev) => [...prev, { title: todo, id: crypto.randomUUID() }]);
+      setTodos((prev) => {
+        const updatedTodos = [
+          ...prev,
+          { title: todo, id: crypto.randomUUID() },
+        ];
+        localStorage.setItem("todos", JSON.stringify(updatedTodos));
+        return updatedTodos;
+      });
       setTodo("");
     }
   };
   const handleDeleteTodo = (addedTodo) => {
     const updatedTodos = todos.filter((todo, key) => todo.id !== addedTodo.id);
     setTodos(updatedTodos);
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+
     const updatedCompletedTodos = completedTodos.filter(
       (todo) => todo.id !== addedTodo.id
     );
-    setcompletedTodos(updatedCompletedTodos);
+    setCompletedTodos(updatedCompletedTodos);
+    localStorage.setItem(
+      "completedTodos",
+      JSON.stringify(updatedCompletedTodos)
+    );
   };
+  useEffect(() => {
+    const localTodos = localStorage.getItem("todos");
+    if (localTodos) {
+      setTodos(JSON.parse(localTodos));
+    }
+    const localCompletedTodos = localStorage.getItem("completedTodos");
+    if (localCompletedTodos) {
+      setCompletedTodos(JSON.parse(localCompletedTodos));
+    }
+  }, []);
+  console.log("completedTodos", completedTodos);
   return (
     <>
       <div>
