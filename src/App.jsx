@@ -24,7 +24,12 @@ const App = () => {
   const handleDeleteTodo = (addedKey) => {
     const updatedTodos = todos.filter((todo, key) => key !== addedKey);
     setTodos(updatedTodos);
-    setcompletedTodos(updatedTodos);
+
+    const updatedCompletedTodos = completedTodos.filter(
+      (todo, key) => key !== addedKey
+    );
+
+    setcompletedTodos(updatedCompletedTodos);
   };
   return (
     <>
