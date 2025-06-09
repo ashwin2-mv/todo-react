@@ -21,7 +21,11 @@ const App = () => {
     // ['todo1','todo2']
     // [['todo1','todo2']]
   };
-
+  const handleDeleteTodo = (addedKey) => {
+    const updatedTodos = todos.filter((todo, key) => key !== addedKey);
+    setTodos(updatedTodos);
+    setcompletedTodos(updatedTodos);
+  };
   return (
     <>
       <div>
@@ -63,6 +67,12 @@ const App = () => {
                           Mark As Completed
                         </button>
                       )}
+                      <button
+                        className="secondary outline"
+                        onClick={() => handleDeleteTodo(key)}
+                      >
+                        Delete{" "}
+                      </button>
                     </div>
                   </div>
                 </li>
