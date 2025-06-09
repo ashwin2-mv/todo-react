@@ -3,12 +3,13 @@ import { useState } from "react";
 const App = () => {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
+  console.log(todos);
   const [completedTodos, setcompletedTodos] = useState([]);
   const handleMarkAsCompleted = (addedTodo) => {
     setcompletedTodos((prev) => [...prev, addedTodo]);
   };
   const handleTodos = () => {
-    if (todo.length != 0) {
+    if (todo.length !== 0) {
       setTodos((prev) => [...prev, { title: todo, id: crypto.randomUUID() }]);
       setTodo("");
     }
